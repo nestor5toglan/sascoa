@@ -1,0 +1,129 @@
+.program-form-section {
+  margin-top: 64px;
+  padding: 40px;
+  border: 1px solid #dfccca;
+  border-radius: 20px;
+  background: #fff;
+}
+.program-form-intro {
+  max-width: 760px;
+  margin-bottom: 30px;
+}
+.program-form-intro h2 {
+  margin: 16px 0;
+  font-size: clamp(28px, 3vw, 40px);
+}
+.program-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+.program-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  font-size: 17px;
+}
+.program-fields input,
+.program-fields textarea,
+.program-fields select {
+  width: 100%;
+  min-width: 0;
+  font: inherit;
+  padding: 12px;
+  border: 1px solid #d7c2c5;
+  border-radius: 8px;
+  background: #fff;
+}
+.program-fields .prereg-consent {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.program-fields .prereg-consent input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.program-wide {
+  grid-column: 1/-1;
+}
+.program-member {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 16px;
+  align-items: end;
+  margin-block: 18px;
+  padding: 18px;
+  background: #f7f0eb;
+  border-radius: 12px;
+}
+.program-member button {
+  min-width: 0;
+}
+.program-receipt {
+  padding: 25px;
+  background: #f2f5ed;
+  border-left: 4px solid #637952;
+  overflow-wrap: anywhere;
+}
+.program-review-body {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.program-admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-block: 20px;
+}
+.program-private-pdf {
+  padding: 20px;
+  background: #f3eae5;
+  border-radius: 12px;
+  margin-block: 22px;
+}
+.program-private-pdf a {
+  overflow-wrap: anywhere;
+}
+.program-settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.program-settings-grid > * {
+  min-width: 0;
+}
+.program-form-section .button {
+  white-space: normal;
+}
+@media (max-width: 900px) {
+  .program-member {
+    grid-template-columns: 1fr 1fr;
+  }
+  .program-member button {
+    grid-column: 1/-1;
+    justify-self: start;
+  }
+}
+@media (max-width: 600px) {
+  .program-form-section {
+    padding: 24px 18px;
+    margin-top: 40px;
+  }
+  .program-fields,
+  .program-settings-grid,
+  .program-member {
+    grid-template-columns: 1fr;
+  }
+  .program-wide {
+    grid-column: 1;
+  }
+  .program-member {
+    padding: 14px;
+  }
+  .program-settings-grid .program-wide {
+    grid-column: 1;
+  }
+}

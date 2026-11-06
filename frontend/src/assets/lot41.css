@@ -1,0 +1,88 @@
+.expo-public-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 24px;
+}
+.expo-public-card {
+  min-width: 0;
+  border: 1px solid #e1d1ce;
+  border-radius: 15px;
+  padding: 24px;
+}
+.expo-public-card .media-image {
+  height: 100px;
+  width: 100%;
+  margin-bottom: 18px;
+}
+.expo-public-card h4 {
+  font-size: 23px;
+  margin-block: 14px;
+}
+.expo-description {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.expo-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+.expo-admin-grid > * {
+  min-width: 0;
+}
+.expo-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.expo-span {
+  grid-column: 1/-1;
+}
+.expo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-block: 20px;
+}
+.expo-notice {
+  padding: 18px;
+  background: #f6ece7;
+  border-left: 3px solid #640b25;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.expo-payment {
+  padding: 18px;
+  border: 1px solid #d9c6c8;
+  border-radius: 12px;
+  margin-block: 16px;
+}
+.expo-payment p {
+  margin: 8px 0;
+}
+.expo-card-logo .media-image {
+  width: 160px;
+  height: 100px;
+}
+.salon-exhibitors {
+  margin-block: 38px;
+}
+.expo-admin-grid label input,
+.expo-admin-grid label select,
+.expo-form-grid input,
+.expo-form-grid select {
+  min-width: 0;
+  max-width: 100%;
+}
+@media (max-width: 850px) {
+  .expo-admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .expo-form-grid,
+  .expo-public-grid {
+    grid-template-columns: 1fr;
+  }
+}

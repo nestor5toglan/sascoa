@@ -1,0 +1,134 @@
+/* Espaces haut et bas identiques, y compris après une section de partenaires vide. */
+.closing-band {
+  padding-block: 64px;
+}
+.closing-band .closing-banner {
+  margin-block: 0;
+}
+.globe-controls button,
+.artwork-pause,
+.partner-controls button {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.globe-controls {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.contact-icon {
+  display: inline-block;
+  width: 21px;
+  height: 21px;
+  flex: 0 0 21px;
+  vertical-align: middle;
+}
+.footer-contact a,
+.contact-line,
+.contact-card dd a,
+.contact-card > a {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+.contact-icon {
+  margin-top: 3px;
+}
+.footer-contact a span,
+.contact-line span {
+  min-width: 0;
+}
+.partner-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  padding: 8px 2px 18px;
+}
+.partner-logo-card {
+  flex: 0 0 calc((100% - 72px) / 4);
+  min-width: 0;
+  border: 1px solid #e5d5d1;
+  border-radius: 16px;
+  background: #fff;
+  padding: 24px;
+  text-align: center;
+  scroll-snap-align: start;
+}
+.partner-logo-card a {
+  display: block;
+}
+.partner-logo-card .media-image {
+  height: 110px;
+  background: white;
+  margin-bottom: 20px;
+}
+.partner-logo-card .media-image img {
+  object-fit: contain;
+  padding: 8px;
+}
+.partner-logo-card span {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.partner-logo-card small {
+  display: block;
+  font-size: 17px;
+  margin-top: 8px;
+  color: var(--muted);
+}
+.partner-controls {
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 18px;
+}
+.partner-controls button {
+  min-width: 52px;
+}
+.admin-partner-preview .media-image {
+  width: 180px;
+  height: 110px;
+}
+.partner-admin-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+@media (max-width: 1000px) {
+  .partner-logo-card {
+    flex-basis: calc((100% - 48px) / 3);
+  }
+}
+@media (max-width: 700px) {
+  .closing-band {
+    padding-block: 40px;
+  }
+  .partner-logo-card {
+    flex-basis: calc((100% - 24px) / 2);
+    padding: 20px;
+  }
+  .partner-track {
+    gap: 24px;
+  }
+}
+@media (max-width: 450px) {
+  .partner-logo-card {
+    flex-basis: 82%;
+  }
+  .contact-icon {
+    width: 19px;
+    height: 19px;
+    flex-basis: 19px;
+  }
+  .closing-band .closing-banner {
+    padding: 30px 25px;
+  }
+}
+.partners-section.section {
+  padding-bottom: 0;
+}

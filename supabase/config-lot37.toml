@@ -1,0 +1,3 @@
+# Ajouter ce bloc au config.toml existant, sans remplacer les autres réglages.
+[functions.salon-preregistration]
+verify_jwt = false

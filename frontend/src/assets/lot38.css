@@ -1,0 +1,364 @@
+.hero-poster.globe-poster {
+  min-height: 760px;
+  padding: 30px 28px 26px;
+  border-top-left-radius: 100px;
+}
+.globe-poster .poster-top {
+  padding-left: 18px;
+  position: relative;
+  z-index: 2;
+}
+.africa-globe {
+  position: relative;
+  width: calc(100% + 48px);
+  margin: 0 -24px;
+  height: clamp(350px, 34vw, 490px);
+  isolation: isolate;
+}
+.globe-host {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+.globe-host:active {
+  cursor: grabbing;
+}
+.globe-host canvas {
+  display: block;
+  max-width: 100%;
+}
+.globe-state {
+  position: absolute;
+  inset: 40% 12% auto;
+  text-align: center;
+  color: #f8f2ee;
+  font-size: 17px;
+}
+.globe-controls {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: space-between;
+  z-index: 6;
+  pointer-events: none;
+}
+.globe-controls span {
+  font-size: 17px;
+  line-height: 1.4;
+  max-width: 65%;
+  opacity: 0.8;
+}
+.globe-controls button {
+  pointer-events: auto;
+  font: inherit;
+  font-size: 17px;
+  border: 1px solid #f8f2ee55;
+  border-radius: 30px;
+  background: #4a081bba;
+  color: #f8f2ee;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.globe-avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.globe-avatar-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid #f8f2ee;
+  border-radius: 50%;
+  background: #f8f2ee;
+  color: #640b25;
+  box-shadow: 0 4px 20px #0005;
+  transition: transform 0.3s;
+  font-size: 17px;
+  font-weight: 700;
+}
+.globe-avatar-frame img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #640b25;
+}
+.globe-avatar-hub .globe-avatar-frame {
+  width: 48px;
+  height: 48px;
+  border: 3px solid white;
+}
+.globe-avatar-pulse {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f8f2ee66;
+  animation: globe-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.globe-avatar-hub .globe-avatar-pulse {
+  width: 56px;
+  height: 56px;
+}
+.globe-avatar:hover .globe-avatar-frame {
+  transform: scale(1.25);
+}
+.globe-tooltip {
+  position: absolute;
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  gap: 5px;
+  width: 210px;
+  padding: 13px;
+  border-radius: 12px;
+  background: #4a081be8;
+  border: 1px solid #f8f2ee55;
+  backdrop-filter: blur(10px);
+  color: #fff;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+  font-size: 17px;
+  line-height: 1.4;
+  box-shadow: 0 10px 30px #0003;
+}
+.globe-avatar:hover .globe-tooltip {
+  opacity: 1;
+}
+.globe-tooltip span {
+  opacity: 0.85;
+}
+.globe-still .globe-avatar-pulse {
+  animation-play-state: paused;
+}
+.globe-poster .poster-copy {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+}
+.globe-poster .poster-copy strong {
+  font-size: clamp(40px, 4vw, 58px);
+}
+.globe-poster .poster-bottom {
+  margin-top: 28px;
+}
+.ambient-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.ambient-section > .container,
+.ambient-section > .footer-top,
+.ambient-section > .footer-bottom {
+  position: relative;
+  z-index: 1;
+}
+.ambient-orb {
+  position: absolute;
+  display: block;
+  width: clamp(250px, 40vw, 620px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(circle, #bd6a7f22 0%, #e1b6bd12 43%, transparent 70%);
+  will-change: transform;
+}
+.ambient-one {
+  top: -25%;
+  right: -10%;
+}
+.ambient-two {
+  bottom: -50%;
+  left: -13%;
+  background: radial-gradient(circle, #ee98651c, transparent 70%);
+}
+.site-footer .ambient-orb {
+  z-index: 0;
+}
+.footer-wire {
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  right: -240px;
+  top: -80px;
+  border: 1px solid #640b2512;
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow:
+    0 0 0 55px #640b2505,
+    0 0 0 110px #640b2504,
+    0 0 0 165px #640b2503;
+}
+.contact-panel {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 40px;
+  margin-top: 50px;
+}
+.contact-card {
+  background: var(--wine);
+  color: #f8f2ee;
+  border-radius: 24px;
+  padding: 34px;
+  align-self: start;
+  position: relative;
+  overflow: hidden;
+}
+.contact-card h2 {
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.15;
+  margin: 22px 0 32px;
+}
+.contact-card .eyebrow {
+  color: #f8f2ee;
+}
+.contact-card dt {
+  font-size: 17px;
+  opacity: 0.7;
+  margin-top: 26px;
+}
+.contact-card dd {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+  font-size: 17px;
+}
+.contact-card > a {
+  display: inline-block;
+  margin-top: 32px;
+  font-weight: 600;
+}
+.contact-write h2 {
+  font-size: 32px;
+}
+.contact-write .prereg-form {
+  margin-top: 24px;
+}
+.contact-settings {
+  margin-bottom: 30px;
+}
+.contact-settings h3 {
+  font-size: 27px;
+  margin-bottom: 16px;
+}
+.contact-settings form {
+  margin-top: 24px;
+}
+.danger-button {
+  color: #a52138;
+  border-color: #cfa5ae;
+  margin: 8px 0 0;
+}
+.prereg-admin .admin-table td:last-child {
+  min-width: 170px;
+}
+.prereg-admin select {
+  font: inherit;
+  padding: 12px;
+  border: 1px solid #cdbfc2;
+  border-radius: 8px;
+  max-width: 100%;
+}
+@keyframes globe-ping {
+  70%,
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+@media (min-width: 1201px) {
+  .header-inner {
+    flex-wrap: wrap;
+  }
+  .header-inner nav {
+    gap: 20px;
+  }
+  .brand-lockup small {
+    display: none;
+  }
+  .header-inner nav > a {
+    font-size: 17px;
+  }
+}
+@media (max-width: 1300px) and (min-width: 1201px) {
+  .header-inner nav {
+    gap: 13px;
+  }
+  .brand-lockup strong {
+    font-size: 24px;
+  }
+}
+@media (max-width: 1000px) {
+  .hero-poster.globe-poster {
+    min-height: 680px;
+  }
+  .africa-globe {
+    height: 430px;
+  }
+}
+@media (max-width: 650px) {
+  .contact-panel {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .contact-card {
+    padding: 28px;
+  }
+  .hero-poster.globe-poster {
+    min-height: 650px;
+    padding-inline: 22px;
+    border-top-left-radius: 70px;
+  }
+  .africa-globe {
+    height: 390px;
+    width: calc(100% + 44px);
+    margin-inline: -22px;
+  }
+  .globe-controls {
+    left: 20px;
+    right: 20px;
+    bottom: -8px;
+    gap: 8px;
+  }
+  .globe-controls span {
+    font-size: 17px;
+    max-width: 58%;
+  }
+  .globe-controls button {
+    padding: 7px 9px;
+  }
+  .globe-tooltip {
+    width: 180px;
+  }
+  .globe-poster .poster-copy {
+    margin-top: 26px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .globe-avatar-pulse {
+    animation: none;
+  }
+  .globe-avatar-frame,
+  .globe-tooltip {
+    transition: none;
+  }
+  .ambient-orb {
+    will-change: auto;
+  }
+}
+/* Laisser les commandes sous le globe, hors des portraits. */
+.africa-globe { margin-bottom:48px; }
+.globe-controls { bottom:-44px; }

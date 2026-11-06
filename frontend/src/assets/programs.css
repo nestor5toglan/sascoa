@@ -1,0 +1,135 @@
+.editorial-content {
+  max-width: 1000px;
+}
+.editorial-cover {
+  width: 100%;
+  height: clamp(220px, 40vw, 480px);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 38px;
+}
+.editorial-text {
+  max-width: 800px;
+  margin-inline: auto;
+  font-size: 18px;
+  line-height: 1.85;
+}
+.editorial-text p {
+  margin: 0 0 26px;
+}
+.editorial-related {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.admin-check {
+  display: flex;
+  gap: 14px;
+  align-items: start;
+  line-height: 1.6;
+}
+.admin-fields .admin-check input {
+  width: 22px;
+  min-height: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin: 3px 0 0;
+  accent-color: var(--wine);
+}
+.admin-speaker-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+  margin-block: 20px;
+}
+.admin-module-links {
+  margin-top: 22px;
+}
+.admin-module-links .text-link {
+  margin-right: 22px;
+}
+@media (max-width: 700px) {
+  .admin-speaker-row {
+    grid-template-columns: 1fr;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .editorial-related {
+    align-items: start;
+    flex-direction: column;
+  }
+  .editorial-related .button {
+    width: 100%;
+  }
+  .admin-sidebar nav {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .admin-sidebar nav {
+    grid-template-columns: 1fr;
+  }
+}
+/* La navigation comprend maintenant Pitch et Hackathon. */
+@media (max-width: 1200px) {
+  .header-inner {
+    height: 80px;
+  }
+  .brand-lockup small {
+    display: none;
+  }
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--wine);
+    font-size: 17px;
+  }
+  .header-inner nav {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 80px;
+    background: var(--cream);
+    padding: 18px 24px 24px;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 20px 30px #30101b0a;
+    align-items: stretch;
+    gap: 0;
+  }
+  .header-inner nav.is-open {
+    display: flex;
+    flex-direction: column;
+  }
+  .header-inner nav > a {
+    font-size: 17px;
+    min-height: 50px;
+    padding: 10px 0;
+  }
+  .header-inner .admin-link {
+    padding: 12px 16px;
+    margin: 14px 0 0;
+    justify-content: space-between;
+  }
+}
+/* Garder les libellés lisibles avec cinq pages publiques dans la navigation. */
+.site-header .brand-lockup small {
+  display: none;
+}
+.header-inner nav > a,
+.admin-status {
+  white-space: nowrap;
+}

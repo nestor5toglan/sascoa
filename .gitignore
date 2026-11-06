@@ -1,0 +1,38 @@
+# Variables d’environnement et secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+
+# Dépendances
+node_modules/
+
+# Fichiers générés
+dist/
+dist-ssr/
+coverage/
+*.tsbuildinfo
+.eslintcache
+*.timestamp-*.mjs
+
+# Journaux
+logs/
+*.log
+
+# Fichiers locaux Supabase
+supabase/.temp/
+supabase/.branches/
+supabase/.env
+supabase/.env.*
+
+# Archives de sauvegarde
+*.zip
+*.7z
+*.rar
+
+# Éditeurs et système
+.idea/
+.DS_Store
+Thumbs.db
