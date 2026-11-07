@@ -9,12 +9,26 @@ function skipToContent() {
   main?.scrollIntoView({ block: 'start' })
 }
 const open = ref(false)
+const submenu = ref(false)
+function toggleMenu() {
+  open.value = !open.value
+  if (!open.value) submenu.value = false
+}
+const submenuButton = ref<HTMLButtonElement | null>(null)
+function openOnHover() {
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) submenu.value = true
+}
+function closeSubmenu() {
+  submenu.value = false
+  submenuButton.value?.focus()
+}
 const route = useRoute()
 const logo = `${import.meta.env.BASE_URL}brand/sascoa-logo.png`
 watch(
   () => route.fullPath,
   () => {
     open.value = false
+    submenu.value = false
   },
 )
 </script>
@@ -33,7 +47,7 @@ watch(
         type="button"
         :aria-expanded="open"
         aria-controls="main-navigation"
-        @click="open = !open"
+        @click="toggleMenu"
         @keydown.esc="open = false"
       >
         <span>{{ open ? 'Fermer' : 'Menu' }}</span
@@ -45,13 +59,59 @@ watch(
         aria-label="Navigation principale"
         @keydown.esc="open = false"
       >
-        <RouterLink to="/" exact-active-class="active">Accueil</RouterLink>
-        <RouterLink to="/annuaire" active-class="active">L’annuaire</RouterLink>
-        <RouterLink to="/salons" active-class="active">Salons & événements</RouterLink>
-        <RouterLink to="/pitch" active-class="active">Pitch</RouterLink>
-        <RouterLink to="/hackathon" active-class="active">Hackathon</RouterLink
-        ><RouterLink to="/a-propos" active-class="active">À propos</RouterLink
-        ><RouterLink to="/contact" active-class="active">Contact</RouterLink>
+        <RouterLink to="/" exact-active-class="active">SASCOA</RouterLink>
+        <RouterLink to="/annuaire" active-class="active">Annuaire</RouterLink>
+        <RouterLink to="/salon" active-class="active">Salon</RouterLink>
+        <div
+          class="nav-events"
+          @mouseenter="openOnHover"
+          @mouseleave="submenu = false"
+          @keydown.esc.stop="closeSubmenu"
+          @focusout="
+            (event) => {
+              if (
+                !(event.currentTarget as HTMLElement).contains(event.relatedTarget as Node | null)
+              )
+                submenu = false
+            }
+          "
+        >
+          <div class="nav-events-heading">
+            <RouterLink
+              to="/evenements"
+              :class="{
+                active: ['/evenements', '/salons', '/pitch', '/hackathon'].includes(route.path),
+              }"
+              >Autres événements</RouterLink
+            >
+            <button
+              ref="submenuButton"
+              type="button"
+              class="submenu-toggle"
+              :aria-expanded="submenu"
+              aria-controls="events-submenu"
+              aria-label="Afficher les programmes Pitch et Hackathon"
+              @click="submenu = !submenu"
+            >
+              <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+                <path
+                  d="m5 7.5 5 5 5-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <div v-if="submenu" id="events-submenu" class="events-submenu">
+            <RouterLink to="/pitch" active-class="active">Pitch</RouterLink>
+            <RouterLink to="/hackathon" active-class="active">Hackathon</RouterLink>
+          </div>
+        </div>
+        <RouterLink to="/a-propos" active-class="active">À propos</RouterLink>
+        <RouterLink to="/contact" active-class="active">Contact</RouterLink>
         <RouterLink
           v-if="auth.isAdmin"
           to="/administration"

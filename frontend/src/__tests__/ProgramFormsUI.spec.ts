@@ -127,7 +127,7 @@ describe('Formulaires Pitch et Hackathon', () => {
     await flushPromises()
     await label(w, 'Vos compétences').setValue('Design et code')
     await w.find('form').trigger('submit')
-    await vi.waitFor(() => expect(state.submit).toHaveBeenCalledTimes(1))
+    await vi.waitFor(() => expect(state.submit).toHaveBeenCalledTimes(2))
     await flushPromises()
     expect(state.submit.mock.calls[0]![0].submission_key).not.toBe(
       state.submit.mock.calls[1]![0].submission_key,

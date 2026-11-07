@@ -53,8 +53,9 @@ onMounted(load)
       <div class="footer-explore">
         <h2>Explorer</h2>
         <nav aria-label="Navigation de pied de page">
-          <RouterLink to="/">Accueil</RouterLink><RouterLink to="/annuaire">L’annuaire</RouterLink
-          ><RouterLink to="/salons">Salons & événements</RouterLink
+          <RouterLink to="/">SASCOA</RouterLink><RouterLink to="/annuaire">Annuaire</RouterLink
+          ><RouterLink to="/salon">Salon</RouterLink
+          ><RouterLink to="/evenements">Autres événements</RouterLink
           ><RouterLink to="/pitch">Pitch</RouterLink
           ><RouterLink to="/hackathon">Hackathon</RouterLink
           ><RouterLink to="/a-propos">À propos</RouterLink

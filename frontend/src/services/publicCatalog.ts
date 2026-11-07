@@ -9,13 +9,18 @@ const EVENT_FIELDS =
   'id,title,slug,description,event_type,starts_at,ends_at,timezone,location,cover_image_path,program_text,program_pdf_path,speakers,registrations_open,registration_deadline,is_demo'
 
 export async function getSectors(): Promise<Sector[]> {
-  const { data, error } = await supabase
-    .from('activity_sectors')
-    .select('id,name,slug')
-    .order('name')
-    .limit(200)
-  if (error) throw error
-  return data ?? []
+  const all: Sector[] = []
+  for (let start = 0; ; start += 200) {
+    const { data, error } = await supabase
+      .from('activity_sectors')
+      .select('id,name,slug,parent_id')
+      .order('name')
+      .order('id')
+      .range(start, start + 199)
+    if (error) throw error
+    all.push(...(data ?? []))
+    if (!data || data.length < 200) return all
+  }
 }
 
 export async function getCompanies(
@@ -23,6 +28,16 @@ export async function getCompanies(
   text = '',
   sectorId = '',
 ): Promise<PageResult<Company>> {
+  if (sectorId) {
+    const { data, error } = await supabase.rpc('search_public_companies_by_sector', {
+      p_sector: sectorId,
+      p_search: searchTerm(text),
+      p_page: Math.max(1, page),
+      p_size: PAGE_SIZE,
+    })
+    if (error) throw error
+    return data as PageResult<Company>
+  }
   let query = supabase
     .from('companies')
     .select(COMPANY_FIELDS, { count: 'exact' })
@@ -46,11 +61,14 @@ export async function getEvents(
   period: 'upcoming' | 'past' | 'all' = 'upcoming',
   text = '',
   size = PAGE_SIZE,
+  scope: 'all' | 'salon' | 'other' = 'all',
 ): Promise<PageResult<SalonEvent>> {
   let query = supabase
     .from('events')
     .select(EVENT_FIELDS, { count: 'exact' })
     .eq('status', 'published')
+  if (scope === 'salon') query = query.eq('event_type', 'salon')
+  if (scope === 'other') query = query.neq('event_type', 'salon')
   const now = new Date().toISOString()
   if (period === 'upcoming') query = query.gte('ends_at', now)
   if (period === 'past') query = query.lt('ends_at', now)

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { sectorTree } from '../../lib/sectorTree'
 import RichTextEditor from '../../components/admin/RichTextEditor.vue'
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { useAuthStore } from '../../stores/auth'
@@ -57,6 +58,7 @@ const label = (value: PublicationStatus) =>
   ({ draft: 'Brouillon', published: 'Publié', archived: 'Archivé' })[value]
 const load = () =>
   records.run(() => listAdminCompanies(page.value, applied.search, applied.status, applied.sector))
+const sectorChoices = computed(() => sectorTree(sectors.data.value))
 const loadSectors = () => sectors.run(sectorOptions)
 function filter() {
   Object.assign(applied, { search: search.value, status: status.value, sector: sector.value })
@@ -176,8 +178,8 @@ onMounted(() => {
         :disabled="sectors.loading.value || Boolean(sectors.error.value)"
       >
         <option value="">Tous les secteurs</option>
-        <option v-for="option in sectors.data.value" :key="option.id" :value="option.id">
-          {{ option.name }}
+        <option v-for="option in sectorChoices" :key="option.id" :value="option.id">
+          {{ option.label }}
         </option>
       </select>
     </div>
@@ -304,8 +306,8 @@ onMounted(() => {
               :disabled="sectors.loading.value || Boolean(sectors.error.value)"
             >
               <option value="" disabled>Sélectionner un secteur</option>
-              <option v-for="option in sectors.data.value" :key="option.id" :value="option.id">
-                {{ option.name }}
+              <option v-for="option in sectorChoices" :key="option.id" :value="option.id">
+                {{ option.label }}
               </option>
             </select>
             <p

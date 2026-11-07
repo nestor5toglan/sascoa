@@ -33,10 +33,17 @@ const router = createRouter({
       meta: { title: 'Annuaire des entreprises' },
     },
     {
-      path: '/salons',
+      path: '/evenements',
+      alias: '/salons',
       name: 'events',
       component: () => import('../views/EventsView.vue'),
-      meta: { title: 'Salons et événements' },
+      meta: { title: 'Autres événements' },
+    },
+    {
+      path: '/salon',
+      name: 'salon',
+      component: () => import('../views/SalonView.vue'),
+      meta: { title: 'Salon SASCOA' },
     },
     {
       path: '/pitch',

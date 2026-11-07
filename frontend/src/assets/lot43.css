@@ -1,0 +1,323 @@
+/* Navigation et page Salon : tous les styles restent limités à ces blocs. */
+.nav-events {
+  position: relative;
+}
+.nav-events-heading {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.nav-events-heading > a {
+  padding: 12px 0;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+  font-size: 17px;
+}
+.nav-events-heading > a.active {
+  color: var(--wine);
+  text-decoration: underline;
+  text-underline-offset: 9px;
+}
+.submenu-toggle {
+  width: 38px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--wine);
+  cursor: pointer;
+  font-size: 22px;
+}
+.events-submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 30;
+  min-width: 210px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--cream);
+  box-shadow: 0 12px 36px #30101b1a;
+}
+.events-submenu a {
+  display: block;
+  padding: 12px 16px;
+  font-size: 17px;
+  text-decoration: none;
+  border-radius: 6px;
+}
+.events-submenu a:hover,
+.events-submenu a.active {
+  background: #640b2510;
+  color: var(--wine);
+}
+.nav-events a:focus-visible,
+.submenu-toggle:focus-visible,
+.salon-poster-button:focus-visible,
+.salon-editions button:focus-visible {
+  outline: 3px solid var(--wine);
+  outline-offset: 4px;
+}
+.directory-subscribe {
+  display: inline-flex;
+  margin-top: 20px;
+}
+.salon-page {
+  padding-top: 10px;
+}
+.salon-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.salon-filter label {
+  font-weight: 600;
+}
+.salon-filter select {
+  max-width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--cream);
+  font: inherit;
+}
+.salon-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 70px);
+  align-items: center;
+}
+.salon-feature > *,
+.salon-program-grid > * {
+  min-width: 0;
+}
+.salon-poster-button {
+  position: relative;
+  display: block;
+  padding: 0;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #eee4e0;
+  cursor: zoom-in;
+  text-align: left;
+  color: var(--wine);
+}
+.salon-poster-button .media-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  min-height: 240px;
+}
+.salon-poster-button .media-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 760px;
+  object-fit: contain;
+}
+.zoom-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 20px;
+  background: var(--cream);
+  font-size: 17px;
+  font-weight: 600;
+}
+.salon-poster-empty {
+  padding: 48px 32px;
+  border-radius: 18px;
+  background: var(--wine);
+  color: white;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.salon-poster-empty .eyebrow {
+  color: inherit;
+}
+.salon-feature-info h2 {
+  overflow-wrap: anywhere;
+  font-size: clamp(30px, 4vw, 52px);
+}
+.salon-facts {
+  margin: 30px 0;
+}
+.salon-facts > div {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+.salon-facts dt {
+  font-weight: 600;
+  color: var(--wine);
+  margin-bottom: 6px;
+}
+.salon-facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.salon-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.salon-section {
+  padding: clamp(32px, 5vw, 64px) 0;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 110px;
+}
+.salon-section .rich-content {
+  max-width: none;
+}
+.salon-program-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 28px;
+}
+.salon-program-card {
+  display: block;
+  text-decoration: none;
+  padding: clamp(24px, 4vw, 40px);
+  background: var(--wine);
+  color: white;
+  border-radius: 16px;
+}
+.salon-program-card .eyebrow {
+  color: #f4c7d0;
+}
+.salon-program-card p {
+  color: inherit;
+}
+.salon-program-card:hover {
+  box-shadow: 0 10px 25px #640b2525;
+}
+.salon-editions {
+  display: grid;
+  gap: 12px;
+}
+.salon-editions button {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  padding: 20px;
+  border: 1px solid var(--line);
+  background: transparent;
+  border-radius: 10px;
+  color: var(--wine);
+  font: inherit;
+  cursor: pointer;
+}
+.salon-editions button[aria-pressed='true'] {
+  background: #640b250d;
+  border-color: var(--wine);
+}
+.salon-lightbox {
+  width: min(1200px, 96vw);
+  max-width: 96vw;
+  height: auto;
+  max-height: 96dvh;
+  padding: 20px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--cream);
+}
+.salon-lightbox::backdrop {
+  background: #16090fdb;
+}
+.lightbox-close {
+  display: flex;
+  margin: 0 0 14px auto;
+}
+.salon-lightbox .media-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  min-height: 120px;
+}
+.salon-lightbox .media-image img {
+  width: 100%;
+  height: auto;
+  max-height: 75dvh;
+  object-fit: contain;
+}
+.salon-lightbox p {
+  margin: 12px 0 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1200px) {
+  .nav-events-heading {
+    justify-content: space-between;
+  }
+  .nav-events-heading > a {
+    flex: 1;
+    min-height: 50px;
+    padding: 12px 0;
+  }
+  .events-submenu {
+    position: static;
+    min-width: 0;
+    margin: 0 0 12px;
+    box-shadow: none;
+  }
+}
+@media (max-width: 760px) {
+  .salon-feature,
+  .salon-program-grid {
+    grid-template-columns: 1fr;
+  }
+  .salon-feature-info {
+    padding-top: 6px;
+  }
+  .salon-filter {
+    align-items: stretch;
+  }
+  .salon-filter label {
+    width: 100%;
+  }
+  .salon-filter select {
+    flex: 1;
+    min-width: 0;
+  }
+  .salon-lightbox {
+    padding: 12px;
+  }
+}
+
+.salon-practical {
+  display: block;
+  padding: clamp(24px, 4vw, 44px);
+  background: #640b2507;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.salon-practical .salon-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+.salon-practical .salon-actions {
+  margin-bottom: 0;
+}
+.internal-hero > .zoomable-image {
+  width: 100%;
+  min-width: 0;
+}
+.internal-hero > .zoomable-image .media-image img {
+  max-height: 720px;
+}
+@media (max-width: 760px) {
+  .salon-practical .salon-facts {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

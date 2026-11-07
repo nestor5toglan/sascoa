@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { sectorTree } from '../lib/sectorTree'
 import PageArtwork from '../components/PageArtwork.vue'
 import RichContent from '../components/ui/RichContent.vue'
 import { plainText } from '../lib/richText'
@@ -25,6 +26,7 @@ const page = ref(1)
 const selected = ref<Company | null>(null)
 const results = useRemote<PageResult<Company>>({ items: [], count: 0 })
 const sectors = useRemote<Sector[]>([])
+const sectorChoices = computed(() => sectorTree(sectors.data.value))
 const hasFilter = computed(() => Boolean(appliedText.value || appliedSector.value))
 const load = () =>
   results.run(() => getCompanies(page.value, appliedText.value, appliedSector.value))
@@ -86,8 +88,8 @@ onMounted(() => {
           :disabled="sectors.loading.value || Boolean(sectors.error.value)"
         >
           <option value="">Tous les secteurs</option>
-          <option v-for="sector in sectors.data.value" :key="sector.id" :value="sector.id">
-            {{ sector.name }}
+          <option v-for="sector in sectorChoices" :key="sector.id" :value="sector.id">
+            {{ sector.label }}
           </option>
         </select>
       </div>
@@ -95,6 +97,7 @@ onMounted(() => {
         Rechercher <span aria-hidden="true">↗</span>
       </button>
     </form>
+    <p class="muted">Choisir une catégorie inclut aussi tous ses sous-secteurs.</p>
     <p v-if="sectors.error.value" class="inline-error" role="alert">
       Les secteurs n’ont pas pu être chargés.
       <button type="button" class="text-link" @click="sectors.run(getSectors)">Réessayer</button>

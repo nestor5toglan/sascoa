@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import ContactIcon from './ui/ContactIcon.vue'
 import PageArtwork from './PageArtwork.vue'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { getContactSettings, sendContact } from '../services/contact'
 import { useRemote } from '../composables/useRemote'
 import { safeHttpUrl, phoneLink } from '../lib/presentation'
@@ -22,6 +23,14 @@ const form = reactive({
   message: '',
   consent: false,
 })
+const route = useRoute()
+watch(
+  () => route.query.demande,
+  (value) => {
+    if (value === 'annuaire' && !form.subject) form.subject = 'Souscription à l’annuaire'
+  },
+  { immediate: true },
+)
 let key = crypto.randomUUID(),
   lastPayload = ''
 const load = () => remote.run(getContactSettings)
@@ -108,7 +117,13 @@ async function submit() {
         <PageArtwork variant="contact" compact />
       </div>
       <div class="contact-write">
-        <h2>Écrivez-nous</h2>
+        <h2>
+          {{ route.query.demande === 'annuaire' ? 'Souscrire à l’annuaire' : 'Écrivez-nous' }}
+        </h2>
+        <p v-if="route.query.demande === 'annuaire'">
+          Présentez votre structure et vos services. L’organisation étudiera votre demande et vous
+          communiquera les modalités. Cet envoi ne vaut ni paiement ni publication automatique.
+        </p>
         <p v-if="receipt" role="status">
           Votre message est enregistré. Référence : <strong>{{ receipt }}</strong
           >. L’organisation pourra vous répondre à l’adresse indiquée.

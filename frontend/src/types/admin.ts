@@ -7,13 +7,14 @@ export type AdminProfile = {
 }
 export type PublicationStatus = 'draft' | 'published' | 'archived'
 export type AdminSector = {
+  parent_id?: string | null
   id: string
   name: string
   slug: string
   description: string | null
   updated_at: string
 }
-export type SectorInput = Pick<AdminSector, 'name' | 'slug' | 'description'>
+export type SectorInput = Pick<AdminSector, 'name' | 'slug' | 'description' | 'parent_id'>
 export type AdminCompany = Company & { status: PublicationStatus; updated_at: string }
 export type CompanyInput = Omit<AdminCompany, 'id' | 'updated_at' | 'sector'>
 

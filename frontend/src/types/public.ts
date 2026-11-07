@@ -1,4 +1,4 @@
-export type Sector = { id: string; name: string; slug: string }
+export type Sector = { id: string; name: string; slug: string; parent_id?: string | null }
 export type Company = {
   id: string
   name: string

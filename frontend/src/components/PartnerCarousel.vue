@@ -1,148 +1,161 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref, computed } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { Partner } from '../types/public'
 import MediaImage from './ui/MediaImage.vue'
 import { safeHttpUrl } from '../lib/presentation'
 const props = defineProps<{ partners: Partner[] }>()
-const track = ref<HTMLElement | null>(null),
-  root = ref<HTMLElement | null>(null),
+const root = ref<HTMLElement | null>(null),
+  group = ref<HTMLElement | null>(null)
+const reduced = ref(false),
   paused = ref(false),
-  reduced = ref(false),
-  hover = ref(false),
   focused = ref(false),
   visible = ref(true),
-  position = ref(0),
-  canScroll = ref(false),
-  atEnd = ref(false)
-let timer: ReturnType<typeof setInterval> | undefined,
+  hidden = ref(false)
+const repeats = ref(1),
+  duration = ref(40)
+let resize: ResizeObserver | undefined,
   observer: IntersectionObserver | undefined,
-  resize: ResizeObserver | undefined,
   media: MediaQueryList | undefined
-const auto = computed(
-  () => !paused.value && !reduced.value && !hover.value && !focused.value && visible.value,
+const cards = computed(() =>
+  Array.from({ length: reduced.value ? 1 : repeats.value }, (_, repeat) =>
+    props.partners.map((partner) => ({ partner, repeat })),
+  ).flat(),
 )
-function measure() {
-  const el = track.value
-  if (!el) return
-  position.value = el.scrollLeft
-  canScroll.value = el.scrollWidth > el.clientWidth + 2
-  atEnd.value = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2
-}
-function move(direction: number) {
-  const el = track.value
-  if (!el) return
-  el.scrollTo({
-    left: el.scrollLeft + direction * el.clientWidth,
-    behavior: reduced.value ? 'instant' : 'smooth',
-  })
-}
-function manual(direction: number) {
-  paused.value = true
-  move(direction)
+const stopped = computed(
+  () => paused.value || focused.value || reduced.value || !visible.value || hidden.value,
+)
+async function measure() {
+  const width = root.value?.clientWidth || 0
+  const card = group.value?.firstElementChild as HTMLElement | null
+  const cardWidth = card?.getBoundingClientRect().width || 280
+  repeats.value = props.partners.length
+    ? Math.max(1, Math.ceil(width / (props.partners.length * (cardWidth + 24))))
+    : 1
+  await nextTick()
+  duration.value = Math.max(1, (group.value?.getBoundingClientRect().width || 960) / 24)
 }
 function preference() {
   reduced.value = media?.matches ?? false
+  void measure()
+}
+function visibility() {
+  hidden.value = document.hidden
 }
 function blur(event: FocusEvent) {
-  focused.value = !!(
-    event.relatedTarget instanceof Node && root.value?.contains(event.relatedTarget)
-  )
+  focused.value = event.relatedTarget instanceof Node && !!root.value?.contains(event.relatedTarget)
 }
+watch(
+  () => props.partners,
+  () => {
+    void measure()
+  },
+  { deep: true },
+)
 onMounted(() => {
   if (typeof window.matchMedia === 'function') {
     media = window.matchMedia('(prefers-reduced-motion: reduce)')
     preference()
     media.addEventListener('change', preference)
-  } else reduced.value = true
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    resize = new ResizeObserver(() => {
+      void measure()
+    })
+    if (root.value) resize.observe(root.value)
+    if (group.value) resize.observe(group.value)
+  }
   if (typeof IntersectionObserver !== 'undefined') {
     observer = new IntersectionObserver(([entry]) => {
       visible.value = !!entry?.isIntersecting
     })
     if (root.value) observer.observe(root.value)
   }
-  if (typeof ResizeObserver !== 'undefined') {
-    resize = new ResizeObserver(measure)
-    if (track.value) resize.observe(track.value)
-  }
-  measure()
-  timer = setInterval(() => {
-    if (!auto.value || document.hidden || !canScroll.value) return
-    if (atEnd.value) track.value?.scrollTo({ left: 0, behavior: 'smooth' })
-    else move(1)
-  }, 4500)
+  visibility()
+  document.addEventListener('visibilitychange', visibility)
+  void measure()
 })
 onBeforeUnmount(() => {
-  clearInterval(timer)
-  observer?.disconnect()
   resize?.disconnect()
+  observer?.disconnect()
   media?.removeEventListener('change', preference)
+  document.removeEventListener('visibilitychange', visibility)
 })
 </script>
 <template>
   <div
     ref="root"
-    class="partner-carousel"
+    class="partner-carousel partner-marquee"
+    :class="{ 'is-reduced': reduced }"
     role="region"
-    aria-label="Logos des partenaires"
-    aria-roledescription="carrousel"
-    @mouseenter="hover = true"
-    @mouseleave="hover = false"
+    aria-label="Partenaires SASCOA"
     @focusin="focused = true"
     @focusout="blur"
   >
-    <div
-      ref="track"
-      class="partner-track"
-      tabindex="0"
-      aria-label="Liste des partenaires, défilement horizontal"
-      @scroll.passive="measure"
-      @wheel.passive="paused = true"
-      @touchstart.passive="paused = true"
-      @keydown.left.prevent="manual(-1)"
-      @keydown.right.prevent="manual(1)"
+    <button
+      v-if="!reduced"
+      type="button"
+      class="marquee-accessible-pause"
+      :aria-pressed="paused"
+      @click="paused = !paused"
     >
-      <article v-for="partner in props.partners" :key="partner.id" class="partner-logo-card">
-        <a
-          v-if="safeHttpUrl(partner.website_url)"
-          :href="safeHttpUrl(partner.website_url)!"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><MediaImage :path="partner.logo_path" :alt="partner.name" contain /><span
-            >{{ partner.name }} ↗</span
-          ></a
-        ><template v-else
-          ><MediaImage :path="partner.logo_path" :alt="partner.name" contain /><span>{{
-            partner.name
-          }}</span></template
-        ><small>{{ partner.category }}</small>
-      </article>
-    </div>
-    <div v-if="canScroll" class="partner-controls">
-      <button
-        type="button"
-        class="button button-outline"
-        :disabled="position < 2"
-        @click="manual(-1)"
-        aria-label="Partenaires précédents"
+      {{
+        paused
+          ? 'Reprendre le défilement des partenaires'
+          : 'Mettre en pause le défilement des partenaires'
+      }}
+    </button>
+    <div
+      class="partner-marquee-window"
+      :tabindex="reduced ? 0 : undefined"
+      aria-label="Liste des partenaires"
+    >
+      <div
+        class="partner-marquee-track"
+        :style="{
+          '--partner-duration': `${duration}s`,
+          animationPlayState: stopped ? 'paused' : 'running',
+        }"
       >
-        ←</button
-      ><button
-        v-if="!reduced"
-        type="button"
-        class="button button-outline"
-        :aria-pressed="paused"
-        @click="paused = !paused"
-      >
-        {{ paused ? 'Animer' : 'Pause' }}</button
-      ><button
-        type="button"
-        class="button button-outline"
-        :disabled="atEnd"
-        @click="manual(1)"
-        aria-label="Partenaires suivants"
-      >
-        →
-      </button>
+        <div ref="group" class="partner-marquee-group">
+          <article
+            v-for="({ partner, repeat }, index) in cards"
+            :key="`${partner.id}-${index}`"
+            class="partner-logo-card"
+            :aria-hidden="repeat > 0 ? true : undefined"
+            :inert="repeat > 0 ? true : undefined"
+          >
+            <a
+              v-if="repeat === 0 && safeHttpUrl(partner.website_url)"
+              :href="safeHttpUrl(partner.website_url)!"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MediaImage :path="partner.logo_path" :alt="partner.name" contain /><span
+                >{{ partner.name }} ↗</span
+              >
+            </a>
+            <template v-else
+              ><MediaImage
+                :path="partner.logo_path"
+                :alt="repeat ? '' : partner.name"
+                contain
+              /><span>{{ partner.name }}{{ safeHttpUrl(partner.website_url) ? ' ↗' : '' }}</span></template
+            >
+            <small>{{ partner.category }}</small>
+          </article>
+        </div>
+        <div v-if="!reduced" class="partner-marquee-group" aria-hidden="true" inert>
+          <article
+            v-for="({ partner }, index) in cards"
+            :key="`clone-${partner.id}-${index}`"
+            class="partner-logo-card"
+          >
+            <MediaImage :path="partner.logo_path" alt="" contain /><span
+              >{{ partner.name }}{{ safeHttpUrl(partner.website_url) ? ' ↗' : '' }}</span
+            ><small>{{ partner.category }}</small>
+          </article>
+        </div>
+      </div>
     </div>
   </div>
 </template>

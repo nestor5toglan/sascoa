@@ -34,12 +34,17 @@ onMounted(() => {
         découvrir, partager et construire la suite.
       </p>
       <div class="hero-actions">
-        <RouterLink to="/salons" class="button"
-          >Découvrir les rendez-vous <span aria-hidden="true">↗</span></RouterLink
+        <RouterLink to="/salon" class="button"
+          >Découvrir le salon <span aria-hidden="true">↗</span></RouterLink
         ><RouterLink to="/annuaire" class="text-link"
           >Explorer l’annuaire <span aria-hidden="true">→</span></RouterLink
         >
       </div>
+      <RouterLink
+        :to="{ path: '/contact', query: { demande: 'annuaire' } }"
+        class="button button-outline directory-subscribe"
+        >Souscrire à l’annuaire ↗</RouterLink
+      >
       <div class="hero-bottom">
         <span class="little-orbit" aria-hidden="true">✳</span>
         <p>Les bonnes connexions commencent<br /><strong>par une première rencontre.</strong></p>
@@ -129,7 +134,12 @@ onMounted(() => {
           v-for="event in events.data.value.items"
           :key="event.id"
           :event="event"
-          @open="router.push({ path: '/salons', query: { evenement: event.id } })"
+          @open="
+            router.push({
+              path: event.event_type === 'salon' ? '/salon' : '/evenements',
+              query: { evenement: event.id },
+            })
+          "
         />
       </div>
     </div>

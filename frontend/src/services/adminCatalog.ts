@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/auth'
+import { descendantIds } from '../lib/sectorTree'
 import { searchTerm } from '../lib/presentation'
 import { validateCompany, validateSector } from '../lib/adminValidation'
 import type {
@@ -11,7 +12,7 @@ import type {
 } from '../types/admin'
 import type { PageResult } from '../types/public'
 export const ADMIN_PAGE_SIZE = 10
-const SECTOR_FIELDS = 'id,name,slug,description,updated_at'
+const SECTOR_FIELDS = 'id,name,slug,description,parent_id,updated_at'
 const COMPANY_FIELDS =
   'id,name,slug,description,sector_id,structure_type,services,specificities,logo_path,address,phone,public_email,website_url,status,updated_at,sector:activity_sectors(name)'
 const conflict = () =>
@@ -34,13 +35,13 @@ export async function listAdminSectors(page = 1, search = ''): Promise<PageResul
   if (error) throw error
   return { items: data ?? [], count: count ?? 0 }
 }
-export async function sectorOptions(): Promise<Pick<AdminSector, 'id' | 'name'>[]> {
+export async function sectorOptions(): Promise<Pick<AdminSector, 'id' | 'name' | 'parent_id'>[]> {
   await useAuthStore().requireAdmin()
-  const all: Pick<AdminSector, 'id' | 'name'>[] = []
+  const all: Pick<AdminSector, 'id' | 'name' | 'parent_id'>[] = []
   for (let start = 0; ; start += 200) {
     const { data, error } = await supabase
       .from('activity_sectors')
-      .select('id,name')
+      .select('id,name,parent_id')
       .order('name')
       .order('id')
       .range(start, start + 199)
@@ -60,6 +61,7 @@ export async function saveSector(
     name: input.name.trim(),
     slug: input.slug,
     description: clean(input.description),
+    parent_id: input.parent_id || null,
   }
   const query = original
     ? supabase
@@ -84,7 +86,7 @@ export async function listAdminCompanies(
   const term = searchTerm(search)
   if (term) query = query.or(`name.ilike.%${term}%,description.ilike.%${term}%`)
   if (status !== 'all') query = query.eq('status', status)
-  if (sectorId) query = query.eq('sector_id', sectorId)
+  if (sectorId) query = query.in('sector_id', [...descendantIds(await sectorOptions(), sectorId)])
   const start = (Math.max(page, 1) - 1) * ADMIN_PAGE_SIZE
   const { data, error, count } = await query
     .order('name')

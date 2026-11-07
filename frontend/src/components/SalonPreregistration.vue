@@ -148,6 +148,7 @@ watch(
   },
 )
 onMounted(() => {
+  window.addEventListener('sascoa:open-preregistration', manual)
   timer = setTimeout(() => {
     due = true
     auto()
@@ -157,6 +158,7 @@ onMounted(() => {
   observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] })
 })
 onBeforeUnmount(() => {
+  window.removeEventListener('sascoa:open-preregistration', manual)
   disposed = true
   clearTimeout(timer)
   observer?.disconnect()

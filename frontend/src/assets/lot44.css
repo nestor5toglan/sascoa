@@ -1,0 +1,163 @@
+/* Sous-menu : le chevron partage l'axe du texte. */
+.nav-events-heading {
+  align-items: center;
+  gap: 4px;
+}
+.nav-events-heading > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  line-height: 1.4;
+  padding-block: 10px;
+}
+.submenu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 32px;
+  height: 44px;
+  line-height: 1;
+}
+.submenu-toggle svg {
+  display: block;
+  transition: transform 0.2s ease;
+}
+.submenu-toggle[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+.events-submenu {
+  top: calc(100% - 1px);
+}
+/* Les visuels éditoriaux retrouvent la même largeur utile que les textes. */
+.editorial-banner.container {
+  width: min(1200px, calc(100% - 80px));
+  max-width: none;
+  margin-inline: auto;
+  margin-bottom: 36px;
+  padding: 0;
+}
+.editorial-banner .media-image {
+  height: clamp(180px, 23vw, 320px);
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 20px;
+}
+.editorial-banner .media-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.program-download-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-block: 24px;
+}
+/* Défilement continu : deux groupes strictement identiques, sans saut en fin de boucle. */
+.partner-marquee {
+  position: relative;
+}
+.partner-marquee-window {
+  width: 100%;
+  overflow: hidden;
+  padding-block: 8px;
+  scrollbar-width: none;
+}
+.partner-marquee-window::-webkit-scrollbar {
+  display: none;
+}
+.partner-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: sascoa-partners var(--partner-duration, 40s) linear infinite;
+}
+.partner-marquee-group {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 24px;
+  padding-right: 24px;
+}
+.partner-marquee .partner-logo-card {
+  width: 280px;
+  flex: 0 0 280px;
+  scroll-snap-align: none;
+}
+.marquee-accessible-pause {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+}
+.marquee-accessible-pause:focus-visible {
+  z-index: 2;
+  top: 12px;
+  left: 12px;
+  width: auto;
+  height: auto;
+  clip-path: none;
+  padding: 12px 18px;
+  border: 2px solid var(--wine);
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--wine);
+  font: inherit;
+}
+.partner-marquee.is-reduced .partner-marquee-track {
+  animation: none;
+  transform: none;
+}
+.partner-marquee.is-reduced .partner-marquee-window {
+  overflow-x: auto;
+}
+@keyframes sascoa-partners {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 760px) {
+  .editorial-banner.container {
+    width: calc(100% - 48px);
+  }
+  .editorial-banner .media-image {
+    height: 180px;
+    border-radius: 14px;
+  }
+  .partner-marquee .partner-logo-card {
+    width: 240px;
+    flex-basis: 240px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .partner-marquee-track {
+    animation: none;
+    transform: none;
+  }
+  .partner-marquee-window {
+    overflow-x: auto;
+  }
+  .submenu-toggle svg {
+    transition: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .editorial-banner.container {
+    width: calc(100% - 36px);
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1050px) {
+  .editorial-banner.container {
+    width: calc(100% - 48px);
+  }
+}

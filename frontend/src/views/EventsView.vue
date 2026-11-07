@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SalonExhibitors from '../components/SalonExhibitors.vue'
 import PageArtwork from '../components/PageArtwork.vue'
 import RichContent from '../components/ui/RichContent.vue'
 
@@ -34,7 +33,10 @@ const speakers = computed(() => {
     Boolean(item && typeof item === 'object' && typeof item.name === 'string' && item.name.trim()),
   )
 })
-const load = () => results.run(() => getEvents(page.value, appliedPeriod.value, appliedText.value))
+const load = () =>
+  results.run(() =>
+    getEvents(page.value, appliedPeriod.value, appliedText.value, PAGE_SIZE, 'other'),
+  )
 function search() {
   appliedPeriod.value = period.value
   page.value = 1
@@ -52,6 +54,10 @@ function changePage(value: number) {
   document.getElementById('event-results')?.scrollIntoView({ block: 'start', behavior: 'auto' })
 }
 function open(event: SalonEvent) {
+  if (event.event_type === 'salon') {
+    void router.push({ path: '/salon', query: { evenement: event.id } })
+    return
+  }
   detailVersion += 1
   detailLoading.value = false
   detailError.value = ''
@@ -78,6 +84,10 @@ async function openFromQuery() {
   try {
     const event = await getEvent(id)
     if (current === detailVersion) {
+      if (event?.event_type === 'salon') {
+        await router.replace({ path: '/salon', query: { evenement: event.id } })
+        return
+      }
       selected.value = event
       if (!event) detailError.value = 'Cet événement n’est pas disponible.'
     }
@@ -96,16 +106,22 @@ onMounted(() => {
 <template>
   <section class="page-intro container internal-hero">
     <div class="internal-hero-copy">
-      <p class="eyebrow">Salons & événements</p>
+      <p class="eyebrow">Autres événements</p>
       <h1>Se retrouver<br />pour <em>aller plus loin</em><span class="title-dot">.</span></h1>
       <p>
-        Un salon pour découvrir, un forum pour échanger, une conférence pour ouvrir les
-        perspectives. Retrouvez les rendez-vous du SASCOA.
+        Forums, conférences et rencontres : découvrez les autres rendez-vous du SASCOA. Retrouvez
+        également les programmes Pitch et Hackathon.
       </p>
     </div>
     <PageArtwork variant="salons" />
   </section>
   <section class="container section-bottom">
+    <div class="salon-actions">
+      <RouterLink to="/pitch" class="button button-outline">Découvrir le Pitch ↗</RouterLink
+      ><RouterLink to="/hackathon" class="button button-outline"
+        >Découvrir le Hackathon ↗</RouterLink
+      >
+    </div>
     <form
       class="filter-bar"
       role="search"
@@ -217,11 +233,6 @@ onMounted(() => {
           </li>
         </ul></template
       >
-      <SalonExhibitors
-        v-if="selected.event_type === 'salon'"
-        :key="selected.id"
-        :event-id="selected.id"
-      />
       <div class="contact-box">
         <h3>Participation</h3>
         <p v-if="new Date(selected.ends_at).getTime() < Date.now()">Cet événement est terminé.</p>

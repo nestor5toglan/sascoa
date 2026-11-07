@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { sectorTree, descendantIds } from '../../lib/sectorTree'
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useRemote } from '../../composables/useRemote'
 import { useUnsavedChanges } from '../../composables/useUnsavedChanges'
-import { ADMIN_PAGE_SIZE, listAdminSectors, saveSector } from '../../services/adminCatalog'
+import {
+  ADMIN_PAGE_SIZE,
+  listAdminSectors,
+  saveSector,
+  sectorOptions,
+} from '../../services/adminCatalog'
 import { adminError, slugify, validateSector } from '../../lib/adminValidation'
 import type { AdminSector, SectorInput } from '../../types/admin'
 import type { PageResult } from '../../types/public'
@@ -19,7 +25,21 @@ const editing = ref<AdminSector | null>(null),
   saving = ref(false)
 const error = ref(''),
   success = ref('')
-const form = reactive<SectorInput>({ name: '', slug: '', description: '' })
+const form = reactive<SectorInput>({ name: '', slug: '', description: '', parent_id: null })
+const options = useRemote<Awaited<ReturnType<typeof sectorOptions>>>([])
+const loadOptions = () => options.run(sectorOptions)
+const allChoices = computed(() => sectorTree(options.data.value))
+const parentChoices = computed(() => {
+  const excluded = editing.value
+    ? descendantIds(options.data.value, editing.value.id)
+    : new Set<string>()
+  return allChoices.value.filter((option) => !excluded.has(option.id))
+})
+function parentLabel(id?: string | null) {
+  return id
+    ? allChoices.value.find((option) => option.id === id)?.label || 'Parent indisponible'
+    : 'Catégorie principale'
+}
 const baseline = ref('')
 const dirty = computed(() => showEditor.value && JSON.stringify(form) !== baseline.value)
 const { confirmDiscard } = useUnsavedChanges(dirty, saving)
@@ -40,6 +60,7 @@ async function open(record?: AdminSector) {
     name: record?.name ?? '',
     slug: record?.slug ?? '',
     description: record?.description ?? '',
+    parent_id: record?.parent_id ?? null,
   })
   baseline.value = JSON.stringify(form)
   showEditor.value = true
@@ -67,17 +88,21 @@ async function save() {
       name: result.name,
       slug: result.slug,
       description: result.description ?? '',
+      parent_id: result.parent_id ?? null,
     })
     baseline.value = JSON.stringify(form)
     success.value = 'Secteur enregistré.'
-    await load()
+    await Promise.all([load(), loadOptions()])
   } catch (cause) {
     error.value = adminError(cause)
   } finally {
     saving.value = false
   }
 }
-onMounted(load)
+onMounted(() => {
+  void load()
+  void loadOptions()
+})
 </script>
 <template>
   <header class="admin-page-heading">
@@ -134,6 +159,7 @@ onMounted(load)
       <thead>
         <tr>
           <th scope="col">Secteur</th>
+          <th scope="col">Catégorie parente</th>
           <th scope="col">Identifiant</th>
           <th scope="col">Action</th>
         </tr>
@@ -141,6 +167,7 @@ onMounted(load)
       <tbody>
         <tr v-for="record in records.data.value.items" :key="record.id">
           <th scope="row">{{ record.name }}</th>
+          <td>{{ parentLabel(record.parent_id) }}</td>
           <td>{{ record.slug }}</td>
           <td>
             <button type="button" class="text-link" :disabled="saving" @click="open(record)">
@@ -197,6 +224,27 @@ onMounted(load)
           </div>
         </div>
         <div class="field">
+          <label for="sector-parent">Catégorie parente</label>
+          <select
+            id="sector-parent"
+            v-model="form.parent_id"
+            :disabled="options.loading.value || Boolean(options.error.value)"
+          >
+            <option :value="null">Aucune : catégorie principale</option>
+            <option v-for="option in parentChoices" :key="option.id" :value="option.id">
+              {{ option.label }}
+            </option>
+          </select>
+          <p class="muted">
+            Choisissez la catégorie dont ce secteur dépend, ou laissez-le à la racine. Ses propres
+            enfants le suivront lors d’un déplacement.
+          </p>
+          <p v-if="options.error.value" class="admin-alert" role="alert">
+            Impossible de charger l’arbre.
+            <button type="button" class="text-link" @click="loadOptions">Réessayer</button>
+          </p>
+        </div>
+        <div class="field">
           <label for="sector-description"
             >Description <span class="muted">(facultative)</span></label
           ><textarea
@@ -207,7 +255,11 @@ onMounted(load)
           ></textarea>
         </div>
         <div class="admin-form-actions">
-          <button type="submit" class="button">
+          <button
+            type="submit"
+            class="button"
+            :disabled="options.loading.value || Boolean(options.error.value)"
+          >
             {{ saving ? 'Enregistrement…' : 'Enregistrer le secteur' }}</button
           ><button type="button" class="button button-outline" @click="cancel">
             Fermer l’éditeur

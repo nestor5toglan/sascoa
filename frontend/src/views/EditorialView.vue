@@ -33,7 +33,7 @@ onMounted(load)
   </section>
   <section
     v-if="content?.cover_image_path && !remote.loading.value && !remote.error.value"
-    class="editorial-banner"
+    class="editorial-banner container"
     aria-label="Image de présentation"
   >
     <MediaImage :path="content.cover_image_path" :alt="content.title" />
