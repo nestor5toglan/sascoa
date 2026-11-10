@@ -60,8 +60,8 @@ watch(
         @keydown.esc="open = false"
       >
         <RouterLink to="/" exact-active-class="active">SASCOA</RouterLink>
-        <RouterLink to="/annuaire" active-class="active">Annuaire</RouterLink>
-        <RouterLink to="/salon" active-class="active">Salon</RouterLink>
+        <RouterLink to="/annuaire/" active-class="active">Annuaire</RouterLink>
+        <RouterLink to="/salon/" active-class="active">Salon</RouterLink>
         <div
           class="nav-events"
           @mouseenter="openOnHover"
@@ -78,9 +78,9 @@ watch(
         >
           <div class="nav-events-heading">
             <RouterLink
-              to="/evenements"
+              to="/evenements/"
               :class="{
-                active: ['/evenements', '/salons', '/pitch', '/hackathon'].includes(route.path),
+                active: ['/evenements/', '/pitch/', '/hackathon/'].includes(route.path),
               }"
               >Autres événements</RouterLink
             >
@@ -106,12 +106,12 @@ watch(
             </button>
           </div>
           <div v-if="submenu" id="events-submenu" class="events-submenu">
-            <RouterLink to="/pitch" active-class="active">Pitch</RouterLink>
-            <RouterLink to="/hackathon" active-class="active">Hackathon</RouterLink>
+            <RouterLink to="/pitch/" active-class="active">Pitch</RouterLink>
+            <RouterLink to="/hackathon/" active-class="active">Hackathon</RouterLink>
           </div>
         </div>
-        <RouterLink to="/a-propos" active-class="active">À propos</RouterLink>
-        <RouterLink to="/contact" active-class="active">Contact</RouterLink>
+        <RouterLink to="/a-propos/" active-class="active">À propos</RouterLink>
+        <RouterLink to="/contact/" active-class="active">Contact</RouterLink>
         <RouterLink
           v-if="auth.isAdmin"
           to="/administration"

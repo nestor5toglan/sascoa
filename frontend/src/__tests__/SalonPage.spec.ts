@@ -87,8 +87,8 @@ describe('Page Salon et navigation lot 43', () => {
     await wrapper.get('.lightbox-close').trigger('click')
     expect(wrapper.get('dialog').element.open).toBe(false)
     expect(document.body.style.overflow).toBe('')
-    expect(wrapper.find('a[href="/pitch"]').exists()).toBe(true)
-    expect(wrapper.find('a[href="/hackathon"]').exists()).toBe(true)
+    expect(wrapper.find('a[href="/pitch/"]').exists()).toBe(true)
+    expect(wrapper.find('a[href="/hackathon/"]').exists()).toBe(true)
   })
   it('ne présente pas un forum comme un salon via un lien direct', async () => {
     api.getEvent.mockResolvedValue({ ...salon, event_type: 'forum' })
@@ -98,7 +98,7 @@ describe('Page Salon et navigation lot 43', () => {
   })
   it('redirige les anciens liens de salon vers la page dédiée', async () => {
     const { router } = await render(EventsView, `/salons?evenement=${salon.id}`)
-    expect(router.currentRoute.value.path).toBe('/salon')
+    expect(router.currentRoute.value.path).toBe('/salon/')
     expect(router.currentRoute.value.query.evenement).toBe(salon.id)
   })
   it('affiche un état vide et conserve les accès aux programmes', async () => {

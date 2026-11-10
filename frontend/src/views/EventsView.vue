@@ -55,7 +55,7 @@ function changePage(value: number) {
 }
 function open(event: SalonEvent) {
   if (event.event_type === 'salon') {
-    void router.push({ path: '/salon', query: { evenement: event.id } })
+    void router.push({ path: '/salon/', query: { evenement: event.id } })
     return
   }
   detailVersion += 1
@@ -85,7 +85,7 @@ async function openFromQuery() {
     const event = await getEvent(id)
     if (current === detailVersion) {
       if (event?.event_type === 'salon') {
-        await router.replace({ path: '/salon', query: { evenement: event.id } })
+        await router.replace({ path: '/salon/', query: { evenement: event.id } })
         return
       }
       selected.value = event
@@ -117,8 +117,8 @@ onMounted(() => {
   </section>
   <section class="container section-bottom">
     <div class="salon-actions">
-      <RouterLink to="/pitch" class="button button-outline">Découvrir le Pitch ↗</RouterLink
-      ><RouterLink to="/hackathon" class="button button-outline"
+      <RouterLink to="/pitch/" class="button button-outline">Découvrir le Pitch ↗</RouterLink
+      ><RouterLink to="/hackathon/" class="button button-outline"
         >Découvrir le Hackathon ↗</RouterLink
       >
     </div>

@@ -74,7 +74,7 @@ onMounted(load)
       <RouterLink to="/salons" class="button button-outline">Consulter les événements ↗</RouterLink
       ><RouterLink
         v-if="slug === 'pitch' || slug === 'hackathon'"
-        :to="slug === 'pitch' ? '/hackathon' : '/pitch'"
+        :to="slug === 'pitch' ? '/hackathon/' : '/pitch/'"
         class="text-link"
         >Découvrir {{ slug === 'pitch' ? 'le Hackathon' : 'le Pitch' }} ↗</RouterLink
       >

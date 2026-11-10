@@ -75,7 +75,7 @@ onBeforeUnmount(() => clearInterval(interval))
           >Messages reçus ↗</RouterLink
         >
       </nav>
-      <RouterLink to="/annuaire" class="text-link" target="_blank" rel="noopener"
+      <RouterLink to="/annuaire/" class="text-link" target="_blank" rel="noopener"
         >Voir l’annuaire public ↗</RouterLink
       >
       <button

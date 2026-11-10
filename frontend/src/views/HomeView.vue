@@ -34,14 +34,14 @@ onMounted(() => {
   autour d’un salon professionnel et d’un annuaire des services en Afrique.
 </p>
       <div class="hero-actions">
-        <RouterLink to="/salon" class="button"
+        <RouterLink to="/salon/" class="button"
           >Découvrir le salon <span aria-hidden="true">↗</span></RouterLink
-        ><RouterLink to="/annuaire" class="text-link"
+        ><RouterLink to="/annuaire/" class="text-link"
           >Explorer l’annuaire <span aria-hidden="true">→</span></RouterLink
         >
       </div>
       <RouterLink
-        :to="{ path: '/contact', query: { demande: 'annuaire' } }"
+        :to="{ path: '/contact/', query: { demande: 'annuaire' } }"
         class="button button-outline directory-subscribe"
         >Souscrire à l’annuaire ↗</RouterLink
       >
@@ -88,7 +88,7 @@ onMounted(() => {
           Identifiez une entreprise, une expertise ou un service grâce à un annuaire organisé par
           secteur.
         </p>
-        <RouterLink to="/annuaire" class="text-link">Trouver un acteur ↗</RouterLink>
+        <RouterLink to="/annuaire/" class="text-link">Trouver un acteur ↗</RouterLink>
       </article>
       <article>
         <span class="pillar-number">02 /</span>
@@ -103,7 +103,7 @@ onMounted(() => {
           Donnez de la visibilité à vos activités et découvrez les personnes avec qui envisager de
           nouvelles collaborations.
         </p>
-        <RouterLink to="/annuaire" class="text-link">Explorer les services ↗</RouterLink>
+        <RouterLink to="/annuaire/" class="text-link">Explorer les services ↗</RouterLink>
       </article>
     </div>
   </section>
@@ -136,7 +136,7 @@ onMounted(() => {
           :event="event"
           @open="
             router.push({
-              path: event.event_type === 'salon' ? '/salon' : '/evenements',
+              path: event.event_type === 'salon' ? '/salon/' : '/evenements/',
               query: { evenement: event.id },
             })
           "
@@ -172,7 +172,7 @@ onMounted(() => {
         <p class="eyebrow">Passons du contact à la rencontre</p>
         <h2>Votre prochaine connexion<br />commence <em>ici</em>.</h2>
       </div>
-      <RouterLink to="/annuaire" class="button button-light"
+      <RouterLink to="/annuaire/" class="button button-light"
         >Découvrir les entreprises ↗</RouterLink
       >
     </section>

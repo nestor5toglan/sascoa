@@ -1,20 +1,20 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { adminNavigationGuard } from './adminGuard'
+import publicPages from './publicPages.json'
 
 const router = createRouter({
-  // Fonctionne aussi sur GitHub Pages sans réécriture côté serveur.
-  history: createWebHashHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/contact',
+      path: '/contact/',
       name: 'contact',
       component: () => import('../views/EditorialView.vue'),
       props: { slug: 'contact' },
       meta: { title: 'Contact' },
     },
     {
-      path: '/a-propos',
+      path: '/a-propos/',
       name: 'about',
       component: () => import('../views/EditorialView.vue'),
       props: { slug: 'a-propos' },
@@ -27,33 +27,33 @@ const router = createRouter({
       meta: { title: 'Accueil' },
     },
     {
-      path: '/annuaire',
+      path: '/annuaire/',
       name: 'directory',
       component: () => import('../views/DirectoryView.vue'),
       meta: { title: 'Annuaire des entreprises' },
     },
     {
-      path: '/evenements',
-      alias: '/salons',
+      path: '/evenements/',
       name: 'events',
       component: () => import('../views/EventsView.vue'),
       meta: { title: 'Autres événements' },
     },
+    { path: '/salons', redirect: '/evenements' },
     {
-      path: '/salon',
+      path: '/salon/',
       name: 'salon',
       component: () => import('../views/SalonView.vue'),
       meta: { title: 'Salon SASCOA' },
     },
     {
-      path: '/pitch',
+      path: '/pitch/',
       name: 'pitch',
       component: () => import('../views/EditorialView.vue'),
       props: { slug: 'pitch' },
       meta: { title: 'Pitch' },
     },
     {
-      path: '/hackathon',
+      path: '/hackathon/',
       name: 'hackathon',
       component: () => import('../views/EditorialView.vue'),
       props: { slug: 'hackathon' },
@@ -174,10 +174,44 @@ const router = createRouter({
   },
 })
 
-router.beforeEach((to) => adminNavigationGuard(to, useAuthStore()))
+router.beforeEach((to) => {
+  const legacyPath = to.path === '/' && to.hash.startsWith('#/') ? to.hash.slice(1) : ''
+  if (legacyPath && !/^[/][\\/]/.test(legacyPath)) {
+    const legacy = router.resolve(legacyPath)
+    if (legacy.name !== 'not-found') {
+      return {
+        path: legacy.path,
+        query: { ...to.query, ...legacy.query },
+        hash: legacy.hash,
+        replace: true,
+      }
+    }
+  }
+  const path = to.path.replace(/\/$/, '') || '/'
+  if (path !== '/' && Object.prototype.hasOwnProperty.call(publicPages, path) && to.path !== path + '/') {
+    return { path: path + '/', query: to.query, hash: to.hash, replace: true }
+  }
+  return adminNavigationGuard(to, useAuthStore())
+})
 
 router.afterEach((to) => {
-  document.title = `${String(to.meta.title || 'Accueil')} · SASCOA`
+  const path = (to.path.replace(/\/$/, '') || '/') as keyof typeof publicPages
+  const page = Object.prototype.hasOwnProperty.call(publicPages, path) ? publicPages[path] : undefined
+  document.title = page?.title ?? `${String(to.meta.title || 'Accueil')} · SASCOA`
+
+  document.head.querySelector('link[rel="canonical"]')?.remove()
+  document.head.querySelector('meta[name="description"]')?.remove()
+  document.head.querySelector('meta[name="robots"]')?.remove()
+  if (page) {
+    const canonical = document.createElement('link')
+    canonical.rel = 'canonical'
+    canonical.href = 'https://sascoa.com' + (path === '/' ? path : path + '/')
+    document.head.append(canonical)
+  }
+  const meta = document.createElement('meta')
+  meta.name = page ? 'description' : 'robots'
+  meta.content = page?.description ?? 'noindex'
+  document.head.append(meta)
 })
 
 export default router

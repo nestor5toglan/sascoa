@@ -1,0 +1,34 @@
+{
+  "/": {
+    "title": "SASCOA | Salon professionnel et annuaire des services en Afrique",
+    "description": "Découvrez le salon professionnel SASCOA et son annuaire des services en Afrique. Retrouvez les entreprises du réseau et les prochains événements."
+  },
+  "/salon": {
+    "title": "Salon professionnel SASCOA | Informations et préinscription",
+    "description": "Découvrez le salon SASCOA, les informations pour préparer votre visite et les modalités de préinscription."
+  },
+  "/annuaire": {
+    "title": "Annuaire des entreprises et services en Afrique | SASCOA",
+    "description": "Explorez les entreprises de l’annuaire SASCOA et filtrez les résultats par secteur d’activité."
+  },
+  "/evenements": {
+    "title": "Événements professionnels | SASCOA",
+    "description": "Retrouvez les événements professionnels présentés par SASCOA et les informations pratiques pour y participer."
+  },
+  "/pitch": {
+    "title": "Pitch SASCOA | Présenter son projet",
+    "description": "Découvrez le programme Pitch de SASCOA et consultez les modalités de candidature pour présenter votre projet."
+  },
+  "/hackathon": {
+    "title": "Hackathon SASCOA | Participation et candidature",
+    "description": "Découvrez le Hackathon SASCOA, ses modalités de participation et le formulaire de candidature."
+  },
+  "/a-propos": {
+    "title": "À propos du réseau professionnel SASCOA",
+    "description": "Découvrez la démarche de SASCOA pour rapprocher les entreprises, les administrations et les acteurs des services en Afrique."
+  },
+  "/contact": {
+    "title": "Contact et inscription à l’annuaire | SASCOA",
+    "description": "Contactez l’équipe SASCOA pour poser une question sur le salon, les événements ou l’inscription à l’annuaire."
+  }
+}

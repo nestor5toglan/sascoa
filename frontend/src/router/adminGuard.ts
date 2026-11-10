@@ -5,12 +5,12 @@ export async function adminNavigationGuard(
   to: Pick<RouteLocationNormalized, 'meta' | 'path' | 'query'>,
   auth: ReturnType<typeof useAuthStore>,
 ) {
-  if (!to.meta.requiresAdmin && to.path !== '/administration/connexion') return true
+  const path = to.path.replace(/\/$/, '')
+  if (!to.meta.requiresAdmin && path !== '/administration/connexion') return true
   await auth.initialize()
   const allowed = await auth.verifyAccess()
   if (to.meta.requiresAdmin && !allowed)
-    return { path: '/administration/connexion', query: { redirect: safeAdminRedirect(to.path) } }
-  if (to.path === '/administration/connexion' && allowed)
-    return safeAdminRedirect(to.query.redirect)
+    return { path: '/administration/connexion', query: { redirect: safeAdminRedirect(path) } }
+  if (path === '/administration/connexion' && allowed) return safeAdminRedirect(to.query.redirect)
   return true
 }

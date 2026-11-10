@@ -48,16 +48,16 @@ const load = () => {
 async function changeFilter() {
   page.value = 1
   if (route.query.evenement) {
-    await router.replace({ path: '/salon' })
+    await router.replace({ path: '/salon/' })
   } else await load()
 }
 async function changePage(value: number) {
   page.value = value
-  if (route.query.evenement) await router.replace({ path: '/salon' })
+  if (route.query.evenement) await router.replace({ path: '/salon/' })
   else await load()
 }
 function select(id: string) {
-  void router.push({ path: '/salon', query: { evenement: id } })
+  void router.push({ path: '/salon/', query: { evenement: id } })
 }
 function goToProgram() {
   document.getElementById('salon-programme')?.scrollIntoView({ behavior: 'smooth' })
@@ -141,7 +141,7 @@ onMounted(() => {
             >
               Se préinscrire ↗
             </button>
-            <RouterLink v-else to="/contact" class="button">Contacter l’organisation ↗</RouterLink>
+            <RouterLink v-else to="/contact/" class="button">Contacter l’organisation ↗</RouterLink>
           </div>
         </div>
       </article>
@@ -177,14 +177,14 @@ onMounted(() => {
         </p>
       </div>
       <div class="salon-program-grid">
-        <RouterLink to="/pitch" class="salon-program-card"
+        <RouterLink to="/pitch/" class="salon-program-card"
           ><span class="eyebrow">Présenter · Convaincre</span>
           <h3>Business Pitch ↗</h3>
           <p>
             Découvrez le programme et présentez votre projet lors d’un appel à candidatures.
           </p></RouterLink
         >
-        <RouterLink to="/hackathon" class="salon-program-card"
+        <RouterLink to="/hackathon/" class="salon-program-card"
           ><span class="eyebrow">Imaginer · Construire</span>
           <h3>Hackathon ↗</h3>
           <p>
