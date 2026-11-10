@@ -30,9 +30,9 @@ onMounted(() => {
         ><span class="title-dot">.</span>
       </h1>
       <p class="hero-lead">
-        Entreprises, administrations, experts et porteurs de projets. Un même espace pour se
-        découvrir, partager et construire la suite.
-      </p>
+  SASCOA réunit les entreprises, les administrations, les experts et les porteurs de projets
+  autour d’un salon professionnel et d’un annuaire des services en Afrique.
+</p>
       <div class="hero-actions">
         <RouterLink to="/salon" class="button"
           >Découvrir le salon <span aria-hidden="true">↗</span></RouterLink
